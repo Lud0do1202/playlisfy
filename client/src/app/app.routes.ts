@@ -1,7 +1,6 @@
 import { Routes } from '@angular/router';
 import { LandingPageComponent } from './views/landing-page/landing-page.component';
 import { LoginSpotifyPageComponent } from './views/login-spotify-page/login-spotify-page.component';
-import { LoginSpotifyCallbackPageComponent } from './views/login-spotify-callback-page/login-spotify-callback-page.component';
 import { LoginCyanitePageComponent } from './views/login-cyanite-page/login-cyanite-page.component';
 import { PlaylistsLoadingPageComponent } from './views/playlists-loading-page/playlists-loading-page.component';
 import { PlaylistsPageComponent } from './views/playlists-page/playlists-page.component';
@@ -21,13 +20,6 @@ export const routes: Routes = [
    * - If user is logged in, redirect to 'Playlist Creation Page'
    */
   { path: 'login/spotify', component: LoginSpotifyPageComponent },
-
-  /**
-   * Login Spotify Callback Page
-   * - Save credentials to local storage
-   * - Redirect to 'Playlist Creation Page'
-   */
-  { path: 'login/spotify/callback', component: LoginSpotifyCallbackPageComponent },
 
   /**
    * Login Cyanite Page

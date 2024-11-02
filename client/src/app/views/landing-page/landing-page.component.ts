@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterService } from '../../services/router.service';
+import { InternalRoutes } from '../../enums/internal-routes';
 
 /**
  * Landing Page
@@ -14,10 +15,13 @@ import { RouterService } from '../../services/router.service';
   styleUrl: './landing-page.component.scss',
 })
 export class LandingPageComponent implements OnInit {
+  /* -------------------------------------------------------------------------- */
+  /*                                 ATTRIBUTES                                 */
+  /* -------------------------------------------------------------------------- */
   /**
    * Delay before redirecting in ms
    */
-  private readonly DELAY = 3000;
+  private readonly DELAY = 1000;
 
   /* -------------------------------------------------------------------------- */
   /*                                 CONSTRUCTOR                                */
@@ -29,6 +33,6 @@ export class LandingPageComponent implements OnInit {
   /* -------------------------------------------------------------------------- */
   ngOnInit(): void {
     // Redirect to 'Login Spotify Page' after delay
-    setTimeout(() => this.router.redirect('login-spotify-page'), this.DELAY);
+    setTimeout(() => this.router.redirect(InternalRoutes.LoginSpotifyPage), this.DELAY);
   }
 }
