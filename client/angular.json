@@ -7,12 +7,13 @@
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
-          "style": "scss"
-        }
+          "style": "scss",
+          "skipTests": true
+        }      
       },
       "root": "",
       "sourceRoot": "src",
-      "prefix": "app",
+      "prefix": "pfy",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:application",
@@ -55,7 +56,13 @@
             "development": {
               "optimization": false,
               "extractLicenses": false,
-              "sourceMap": true
+              "sourceMap": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.development.ts"
+                }
+              ]
             }
           },
           "defaultConfiguration": "production"
