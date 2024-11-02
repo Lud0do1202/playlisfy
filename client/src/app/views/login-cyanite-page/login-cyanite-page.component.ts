@@ -5,8 +5,6 @@ import { Component } from '@angular/core';
   standalone: true,
   imports: [],
   templateUrl: './login-cyanite-page.component.html',
-  styleUrl: './login-cyanite-page.component.scss'
+  styleUrl: './login-cyanite-page.component.scss',
 })
-export class LoginCyanitePageComponent {
-
-}
+export class LoginCyanitePageComponent {}

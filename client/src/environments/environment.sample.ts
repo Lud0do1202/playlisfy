@@ -5,4 +5,8 @@ export const environment = {
   server: {
     url: '',
   },
+  spotify: {
+    clientId: '',
+    api: '',
+  },
 };
