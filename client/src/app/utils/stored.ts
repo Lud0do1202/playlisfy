@@ -25,7 +25,7 @@ export const stored = <T = string>(key: LocalStorageKeys) => ({
    *
    * @param value - The value to be stored. Can be a string or null.
    */
-  set value(value: string | null) {
+  set value(value: T | null) {
     if (value === null) {
       localStorage.removeItem(key);
     } else {

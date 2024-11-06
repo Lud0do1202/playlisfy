@@ -9,4 +9,7 @@ export const environment = {
     clientId: '',
     api: '',
   },
+  cyanite : {
+    api: ''
+  },
 };

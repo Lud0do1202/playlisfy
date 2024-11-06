@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
-import { InternalRoutes } from '../enums/internal-routes';
 import { HttpClient } from '@angular/common/http';
-import { tap } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { LocalStorageKeys } from '../enums/local-storage-keys';
 import { SpotifyToken } from '../types/spotify-token';
 import { stored } from '../utils/stored';
+import { LoginError } from '../errors/login-error';
 
 @Injectable({
   providedIn: 'root',
@@ -27,7 +27,7 @@ export class SpotifyService {
   /**
    * URL to redirect the user to after Spotify login.
    */
-  private readonly redirectUrl = `${environment.client.url}/${InternalRoutes.LoginSpotifyPage}`;
+  private readonly redirectUrl = environment.client.url;
 
   /**
    * Spotify API authorization endpoint.
@@ -93,7 +93,7 @@ export class SpotifyService {
     /**
      * Checks if the access token is soon to expire.
      */
-    get soonExpired() {
+    get soonExpired(): boolean {
       if (!this.expires.value) return true;
       const expires = new Date(this.expires.value);
       const delay = 10; // Minutes
@@ -104,16 +104,16 @@ export class SpotifyService {
     /**
      * Save the token to local storage.
      */
-    save: function ({ access_token, refresh_token, expires_in }: SpotifyToken) {
+    save: (token: SpotifyToken): void => {
       // Save token to local storage
-      this.accessToken.value = access_token;
-      this.refreshToken.value = refresh_token;
-      this.expiresIn.value = expires_in.toString();
+      this.token.accessToken.value = token.access_token;
+      this.token.refreshToken.value = token.refresh_token;
+      this.token.expiresIn.value = token.expires_in.toString();
 
       // Calculate expiry date
       const now = new Date();
-      const expiry = new Date(now.getTime() + expires_in * 1000);
-      this.expires.value = expiry.toISOString();
+      const expiry = new Date(now.getTime() + token.expires_in * 1000);
+      this.token.expires.value = expiry.toISOString();
     },
   };
 
@@ -169,11 +169,16 @@ export class SpotifyService {
   /* -------------------------------------------------------------------------- */
   /* ---------------------------------- Login --------------------------------- */
   /**
-   * Handles the Spotify login process for the application.
-   * It checks the URL for authorization parameters and handles token retrieval.
-   * If the user is not logged in, it initiates the Spotify authorization flow.
+   * Handles the Spotify authentication process.
    *
-   * @returns A promise that resolves to a boolean indicating the login status.
+   * This method performs three main tasks:
+   * 1. If an authorization code is present, it attempts to retrieve an access token.
+   * 2. If no access token is available, it initiates the Spotify login process.
+   * 3. If an access token is already available, it returns the current token.
+   *
+   * @returns A Promise that resolves to the Spotify token object if authentication is successful,
+   *          or null if the user is redirected to the Spotify login page.
+   * @throws {LoginError} If there's an error during the authentication process.
    */
   public login = async () => {
     // Get params from URL
@@ -186,7 +191,7 @@ export class SpotifyService {
     if (code || error) {
       // Error handling
       if (!state || state !== this.verifier.state.value || error || !code) {
-        throw new Error('Login error');
+        throw new LoginError('Could not log in to Spotify');
       }
 
       // Save token
@@ -223,26 +228,26 @@ export class SpotifyService {
 
       // Redirect the user to the Spotify authorization URL
       window.location.href = authUrl.toString();
-      return false;
+      return null;
     }
 
-    return true;
+    return this.token;
   };
 
   /* -------------------------------- Get Token ------------------------------- */
   /**
-   * Retrieves an access token from the Spotify API using the provided authorization code.
-   * The method constructs a request to the token endpoint and includes necessary parameters.
+   * Exchanges an authorization code for a Spotify access token.
+   * This method calls the Spotify token endpoint to obtain an access token and refresh token.
    *
-   * @param code - The authorization code received from the Spotify authorization flow.
-   * @returns An observable that emits the Spotify token once retrieved.
-   * @throws Error if the code verifier is not available or if the token request fails.
+   * @param code - The authorization code received from Spotify after user login.
+   * @returns An observable that emits the Spotify token upon successful retrieval.
+   * @throws {LoginError} If the code verifier is missing or there's an error during the authentication process.
    */
-  public getToken = (code: string) => {
+  public getToken = (code: string): Observable<SpotifyToken> => {
     // Get code verifier
     const code_verifier = this.verifier.codeVerifier.value;
     if (!code_verifier) {
-      throw new Error('Login error');
+      throw new LoginError('Could not log in to Spotify');
     }
 
     // Call the token endpoint
@@ -262,18 +267,17 @@ export class SpotifyService {
 
   /* ------------------------------ Refresh Token ----------------------------- */
   /**
-   * Refreshes the access token using the stored refresh token.
-   * This method constructs a request to the Spotify token endpoint
-   * to obtain a new access token.
+   * Refreshes the Spotify access token using the stored refresh token.
+   * This method calls the Spotify token endpoint to obtain a new access token.
    *
-   * @returns An observable that emits the new Spotify token once retrieved.
-   * @throws Error if the refresh token is not available or if the token request fails.
+   * @returns An observable that emits the new Spotify token upon successful retrieval.
+   * @throws {LoginError} If the refresh token is missing or there's an error during the refresh process.
    */
-  refreshToken = () => {
+  refreshToken = (): Observable<SpotifyToken> => {
     // Get refresh token
     const refreshToken = this.token.refreshToken.value;
     if (!refreshToken) {
-      throw new Error('Login error');
+      throw new LoginError('Could not refresh the access token');
     }
 
     // Call the token endpoint

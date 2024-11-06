@@ -1,5 +1,6 @@
+
 /**
- * Enum for local storage keys
+ * All the keys used to store data in the local storage
  */
 export enum LocalStorageKeys {
   /* --------------------------------- Spotify -------------------------------- */
@@ -10,4 +11,10 @@ export enum LocalStorageKeys {
   SpotifyAuthState = 'SpotifyAuthState',
   SpotifyAuthCodeVerifier = 'SpotifyAuthCodeVerifier',
   SpotifyAuthCodeChallenge = 'SpotifyAuthCodeChallenge',
+
+  /* --------------------------------- Cyanite -------------------------------- */
+  CyaniteAccessToken = 'CyaniteAccessToken',
+  CyaniteRefreshToken = 'CyaniteRefreshToken',
+  CyaniteTokenIat = 'CyaniteTokenIat',
+  CyaniteTokenExp = 'CyaniteTokenExp',
 }

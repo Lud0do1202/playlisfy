@@ -1,7 +1,5 @@
 import { Routes } from '@angular/router';
 import { LandingPageComponent } from './views/landing-page/landing-page.component';
-import { LoginSpotifyPageComponent } from './views/login-spotify-page/login-spotify-page.component';
-import { LoginCyanitePageComponent } from './views/login-cyanite-page/login-cyanite-page.component';
 import { PlaylistsLoadingPageComponent } from './views/playlists-loading-page/playlists-loading-page.component';
 import { PlaylistsPageComponent } from './views/playlists-page/playlists-page.component';
 
@@ -10,23 +8,11 @@ export const routes: Routes = [
   /**
    * Landing Page
    * - Animation of the logo
-   * - Redirect to 'Login Spotify Page'
+   * - Login to Spotify
+   * - Login to Cyanite
+   * - Redirect to 'Playlists Page'
    */
   { path: '', component: LandingPageComponent },
-
-  /**
-   * Login Spotify Page
-   * - If user is not logged in, redirect to login page which will redirect to 'Login Callback Page'
-   * - If user is logged in, redirect to 'Playlist Creation Page'
-   */
-  { path: 'login/spotify', component: LoginSpotifyPageComponent },
-
-  /**
-   * Login Cyanite Page
-   * - Get access token from Cyanite trough my server
-   * - Redirect to 'Playlist Creation Page'
-   */
-  { path: 'login/cyanite', component: LoginCyanitePageComponent },
 
   /**
    * Playlists Page
