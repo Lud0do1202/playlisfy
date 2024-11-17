@@ -1,0 +1,166 @@
+/* -------------------------------------------------------------------------- */
+/*                                   IMPORTS                                  */
+/* -------------------------------------------------------------------------- */
+@import "variables";
+@import "../../node_modules/bootstrap/scss/mixins/buttons";
+
+/* -------------------------------------------------------------------------- */
+/*                                    SCALE                                   */
+/* -------------------------------------------------------------------------- */
+@for $n from 1 through 5 {
+  .scale-#{$n} {
+    scale: $n !important;
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/*                                TEXT ALIGMENT                               */
+/* -------------------------------------------------------------------------- */
+.text-justify {
+  text-align: justify;
+}
+
+/* -------------------------------------------------------------------------- */
+/*                                    SIZE                                    */
+/* -------------------------------------------------------------------------- */
+/* ---------------------------------- Width --------------------------------- */
+.w-full {
+  width: 100vw;
+}
+.w-fit {
+  width: fit-content;
+}
+
+/* --------------------------------- Height --------------------------------- */
+.h-full {
+  height: 100vh;
+}
+.h-fit {
+  height: fit-content;
+}
+
+/* -------------------------------------------------------------------------- */
+/*                                   COLORS                                   */
+/* -------------------------------------------------------------------------- */
+/* --------------------------------- Spotify -------------------------------- */
+// Colors
+.color-spotify-green {
+  color: $spotify-green;
+}
+
+.color-spotify-black {
+  color: $spotify-black;
+}
+
+.color-spotify-white {
+  color: $spotify-white;
+}
+
+// Backgrounds
+.bg-spotify-green {
+  background-color: $spotify-green;
+}
+
+.bg-spotify-black {
+  background-color: $spotify-black;
+}
+
+.bg-spotify-white {
+  background-color: $spotify-white;
+}
+
+/* -------------------------------------------------------------------------- */
+/*                                   BUTTONS                                  */
+/* -------------------------------------------------------------------------- */
+/* ----------------------------- Button Variant ----------------------------- */
+.btn-spotify-green {
+  @include button-variant(
+    $background: $spotify-green,
+    $border: $spotify-green,
+    $hover-background: shade-color($spotify-green, $btn-hover-bg-shade-amount),
+    $hover-border: shade-color($spotify-green, $btn-hover-bg-shade-amount),
+    $active-background: shade-color($spotify-green, $btn-active-bg-shade-amount),
+    $active-border: shade-color($spotify-green, $btn-active-bg-shade-amount)
+  );
+}
+
+.btn-spotify-black {
+  @include button-variant(
+    $background: $spotify-black,
+    $border: $spotify-black,
+    $hover-background: tint-color($spotify-black, $btn-hover-bg-tint-amount),
+    $hover-border: tint-color($spotify-black, $btn-hover-bg-tint-amount),
+    $active-background: tint-color($spotify-black, $btn-active-bg-tint-amount),
+    $active-border: tint-color($spotify-black, $btn-active-bg-tint-amount)
+  );
+}
+
+.btn-spotify-white {
+  @include button-variant(
+    $background: $spotify-white,
+    $border: $spotify-white,
+    $hover-background: shade-color($spotify-white, $btn-hover-bg-shade-amount),
+    $hover-border: shade-color($spotify-white, $btn-hover-bg-shade-amount),
+    $active-background: shade-color($spotify-white, $btn-active-bg-shade-amount),
+    $active-border: shade-color($spotify-white, $btn-active-bg-shade-amount)
+  );
+}
+
+/* --------------------------- Button Variant Icon -------------------------- */
+.btn-icon-spotify-green,
+.bg-spotify-black,
+.bg-spotify-white {
+  --bs-btn-padding-x: 0.5rem;
+  --bs-btn-padding-y: 0.25rem;
+}
+
+.btn-icon-spotify-green {
+  @include button-variant(
+    $background: transparent,
+    $border: transparent,
+    $color: $spotify-green,
+    $hover-color: shade-color($spotify-green, $btn-hover-bg-shade-amount * 2),
+    $hover-background: transparent,
+    $hover-border: transparent,
+    $active-color: shade-color($spotify-green, $btn-active-bg-shade-amount * 2),
+    $active-background: transparent,
+    $active-border: transparent,
+    $disabled-color: $spotify-green,
+    $disabled-background: transparent,
+    $disabled-border: transparent
+  );
+}
+
+.btn-icon-spotify-black {
+  @include button-variant(
+    $background: transparent,
+    $border: transparent,
+    $color: $spotify-black,
+    $hover-color: tint-color($spotify-black, $btn-hover-bg-tint-amount * 2),
+    $hover-background: transparent,
+    $hover-border: transparent,
+    $active-color: tint-color($spotify-black, $btn-active-bg-tint-amount * 2),
+    $active-background: transparent,
+    $active-border: transparent,
+    $disabled-color: $spotify-black,
+    $disabled-background: transparent,
+    $disabled-border: transparent
+  );
+}
+
+.btn-icon-spotify-white {
+  @include button-variant(
+    $background: transparent,
+    $border: transparent,
+    $color: $spotify-white,
+    $hover-color: shade-color($spotify-white, $btn-hover-bg-shade-amount * 2),
+    $hover-background: transparent,
+    $hover-border: transparent,
+    $active-color: shade-color($spotify-white, $btn-active-bg-shade-amount * 2),
+    $active-background: transparent,
+    $active-border: transparent,
+    $disabled-color: $spotify-white,
+    $disabled-background: transparent,
+    $disabled-border: transparent
+  );
+}

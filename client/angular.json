@@ -15,6 +15,9 @@
         },
         "@schematics/angular:interceptor": {
           "skipTests": true
+        },
+        "@schematics/angular:directive": {
+          "skipTests": true
         }
       },
       "root": "",
@@ -36,11 +39,7 @@
                 "input": "public"
               }
             ],
-            "styles": [
-              "node_modules/bootstrap/dist/css/bootstrap.min.css",
-              "src/scss/helpers.scss",
-              "src/scss/styles.scss"
-            ],
+            "styles": ["src/scss/styles.scss"],
             "scripts": ["node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"]
           },
           "configurations": {

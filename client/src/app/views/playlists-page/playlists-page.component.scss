@@ -1,0 +1,316 @@
+/* -------------------------------------------------------------------------- */
+/*                                   IMPORTS                                  */
+/* -------------------------------------------------------------------------- */
+@import "../../../scss/variables";
+@import "../../../../node_modules/bootstrap/scss/functions";
+@import "../../../../node_modules/bootstrap/scss/variables";
+
+/* -------------------------------------------------------------------------- */
+/*                                   STYLES                                   */
+/* -------------------------------------------------------------------------- */
+.pfy-playlists-page {
+  // Flexbox
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  gap: map-get($spacers, 5);
+  justify-content: flex-start;
+  align-self: stretch;
+
+  /* -------------------------------------------------------------------------- */
+  /*                                   SECTION                                  */
+  /* -------------------------------------------------------------------------- */
+  > section {
+    // Flexbox
+    display: flex;
+    flex-direction: column;
+    gap: map-get($spacers, 3);
+    justify-content: flex-start;
+    align-self: stretch;
+
+    /* ---------------------------------- Title --------------------------------- */
+    > .section-title {
+      // Flexbox
+      display: flex;
+      flex-direction: column;
+      gap: map-get($spacers, 1);
+      justify-content: flex-start;
+      align-self: stretch;
+
+      // >>>>> Header
+      > h1 {
+        font-size: map-get($display-font-sizes, 3);
+        font-weight: $font-weight-bold;
+
+        // >>>>> Subtitle
+        ~ p {
+          font-style: italic;
+        }
+      }
+
+      > h2 {
+        font-size: map-get($display-font-sizes, 6);
+        font-weight: $font-weight-bold;
+      }
+
+      // >>>>> Subtitle
+      > p {
+        font-size: 1.2rem;
+        font-weight: $font-weight-light;
+        text-align: justify;
+      }
+    }
+  }
+
+  /* -------------------------------------------------------------------------- */
+  /*                               SPOTIFY HISTORY                              */
+  /* -------------------------------------------------------------------------- */
+  .section-spotify-history {
+    /* -------------------------------- Dropzone -------------------------------- */
+    .spotify-history-dropzone {
+      // Flexbox
+      display: flex;
+      flex-direction: column;
+      gap: map-get($spacers, 3);
+      justify-content: center;
+      align-items: center;
+
+      // Border
+      border: $border-width dashed shade-color($spotify-green, 10%);
+      border-radius: 10px;
+
+      // Color
+      color: shade-color($spotify-green, 10%);
+
+      // Padding & Margin
+      padding: map-get($spacers, 5);
+
+      // +++++ Hover
+      transition: opacity 0.2s;
+      &:hover {
+        opacity: 0.8;
+      }
+
+      // +++++ File over
+      &.fileover {
+        animation: shake 0.5s infinite;
+      }
+
+      // >>>>> Icon
+      > i {
+        color: shade-color($spotify-green, 10%);
+      }
+
+      // >>>>> Text
+      > p {
+        font-size: 1.2rem;
+        font-weight: $font-weight-light;
+        text-align: center;
+      }
+    }
+
+    /* ----------------------------- Dropdown Result ---------------------------- */
+    .spotify-history-dropzone-result {
+      // Flexbox
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+
+      // Border
+      border: $border-width solid shade-color($spotify-green, 10%);
+      border-radius: 10px;
+
+      // >>>>> Row
+      .spotify-history-dropzone-result-row {
+        // Flexbox
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+        // Padding & Margin
+        padding: map-get($spacers, 1) map-get($spacers, 3);
+
+        // >>>>> File information
+        > .spotify-history-dropzone-result-row-file-info {
+          // Flexbox
+          display: flex;
+          flex-direction: row;
+          flex-grow: 1;
+
+          // >>>>> Size
+          .spotify-history-dropzone-result-row-file-size {
+            width: 150px;
+          }
+
+          // >>>>> Name
+          .spotify-history-dropzone-result-row-file-name {
+            flex-grow: 1;
+          }
+        }
+      }
+    }
+  }
+
+  /* -------------------------------------------------------------------------- */
+  /*                                  SETTINGS                                  */
+  /* -------------------------------------------------------------------------- */
+  .section-settings {
+    /* ---------------------------------- Cards --------------------------------- */
+    .setting-cards {
+      // Flexbox
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: map-get($spacers, 3);
+      justify-content: space-between;
+      align-items: stretch;
+
+      // >>>>> Card
+      .setting-cards-item {
+        // Flexbox
+        display: flex;
+        flex-direction: column;
+        gap: map-get($spacers, 3);
+        justify-content: space-between;
+        align-items: stretch;
+        flex: 1 1 400px;
+
+        // Padding & Margin
+        padding: map-get($spacers, 3);
+
+        // Border
+        border-radius: 10px;
+
+        // +++++ Hover
+        transition: all 0.2s;
+        &:hover {
+          translate: 2px -2px;
+        }
+
+        // >>>>> Explanation
+        .setting-cards-item-explanation {
+          // Flexbox
+          display: flex;
+          flex-direction: column;
+          gap: map-get($spacers, 1);
+          justify-content: flex-start;
+          align-items: stretch;
+
+          // >>>>> Title
+          > .setting-cards-item-title {
+            width: 100%;
+            font-size: $h3-font-size;
+            font-weight: $font-weight-semibold;
+            background-color: unset;
+            color: unset;
+            border: 1px solid transparent;
+            border-radius: 5px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+
+            &::placeholder {
+              color: rgba(white, 0.5);
+            }
+          }
+
+          // >>>>> Description
+          > .setting-cards-item-description {
+            text-align: justify;
+            width: 100%;
+            background-color: unset;
+            color: unset;
+            border: 1px solid transparent;
+            border-radius: 5px;
+            field-sizing: content;
+            resize: none;
+          }
+        }
+
+        // >>>>> Input
+        .setting-cards-item-inputs {
+          // Flexbox
+          display: flex;
+          flex-direction: row;
+          gap: map-get($spacers, 2);
+          align-items: stretch;
+
+          // >>>>> *
+          > * {
+            // Flexbox
+            flex-grow: 1;
+          }
+        }
+
+        // +++++ COLORS
+        @each $key, $color in $card-colors {
+          &.setting-cards-item-#{$key} {
+            // Color
+            background: linear-gradient(to bottom right, $color, tint-color($color, 10%));
+            color: white;
+
+            // Border
+            box-shadow: 0px 0px 6px 0 tint-color($color, 20%);
+
+            // +++++ Hover
+            &:hover {
+              box-shadow: -6px 6px 6px 0 tint-color($color, 20%);
+            }
+
+            .setting-cards-item-title,
+            .setting-cards-item-description {
+              &:focus {
+                border-color: rgba(white, 0.75);
+                color: white;
+                outline: 2px solid rgba(white, 0.3);
+                box-shadow: 0 0 0 0.25rem rgba(white, 0.2);
+              }
+            }
+
+            // >>>>> Input
+            .setting-cards-item-inputs {
+              .form-control,
+              .form-select,
+              .input-group-text {
+                // Color scheme
+                color-scheme: dark;
+
+                // Select carret
+                --bs-form-select-bg-img: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23dee2e6' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+
+                // Color
+                background-color: rgba(white, 0.25);
+                border-color: rgba(white, 0.5);
+                color: white;
+
+                // Placeholder
+                &::placeholder {
+                  color: rgba(white, 0.5);
+                }
+
+                // Focus
+                &:focus {
+                  border-color: rgba(white, 0.75);
+                  color: white;
+                  outline: 2px solid rgba(white, 0.3);
+                  box-shadow: 0 0 0 0.25rem rgba(white, 0.2);
+                }
+
+                // Remove + - button from the input number
+                &[type="number"]::-webkit-outer-spin-button,
+                &[type="number"]::-webkit-inner-spin-button {
+                  -webkit-appearance: none;
+                  margin: 0;
+                }
+
+                &[type="date"]::-webkit-calendar-picker-indicator {
+                  cursor: pointer;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
