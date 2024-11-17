@@ -1,0 +1,41 @@
+/* -------------------------------------------------------------------------- */
+/*                                   IMPORTS                                  */
+/* -------------------------------------------------------------------------- */
+@import "../../node_modules/bootstrap/scss/bootstrap";
+@import "variables";
+@import "helpers";
+@import "reset";
+@import "typography";
+
+/* -------------------------------------------------------------------------- */
+/*                                    BODY                                    */
+/* -------------------------------------------------------------------------- */
+body {
+  // Color
+  background-color: $spotify-black;
+  color: $spotify-white;
+
+  // Font family
+  font-family: "Host Grotesk", "arial", sans-serif;
+
+  // Padding
+  padding: 50px calc(100vw * 0.05);
+}
+
+/* -------------------------------------------------------------------------- */
+/*                                  SCROLLBAR                                 */
+/* -------------------------------------------------------------------------- */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  border-radius: 10px 0 0 10px;
+  background: tint-color($spotify-black, 10%);
+}
+::-webkit-scrollbar-thumb {
+  border-radius: 10px 0 0 10px;
+  background: shade-color($spotify-green, 30%);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: shade-color($spotify-green, 50%);
+}

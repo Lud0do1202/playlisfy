@@ -1,0 +1,33 @@
+/* -------------------------------------------------------------------------- */
+/*                               HELVETICA_NEUE                               */
+/* -------------------------------------------------------------------------- */
+// @mixin fontFaceHelveticaNeue($name, $weight, $style) {
+//   @font-face {
+//     font-family: "Helvetica Neue";
+//     src: url("../assets/fonts/helvetica-neue-5/#{$name}") format("truetype");
+//     font-weight: $weight;
+//     font-style: $style;
+//   }
+// }
+
+// // Bold - 700
+// @include fontFaceHelveticaNeue("HelveticaNeueHeavy.otf", 700, "normal");
+// @include fontFaceHelveticaNeue("HelveticaNeueHeavyItalic.otf", 700, "italic");
+
+// // Semibold - 600
+// @include fontFaceHelveticaNeue("HelveticaNeueBold.otf", 600, "normal");
+// @include fontFaceHelveticaNeue("HelveticaNeueBoldItalic.otf", 600, "italic");
+
+// // Medium - 500
+// @include fontFaceHelveticaNeue("HelveticaNeueMedium.otf", 500, "normal");
+// @include fontFaceHelveticaNeue("HelveticaNeueMediumItalic.otf", 500, "italic");
+
+// // Normal - 400
+// @include fontFaceHelveticaNeue("HelveticaNeueRoman.otf", 400, "normal");
+// @include fontFaceHelveticaNeue("HelveticaNeueItalic.ttf", 400, "italic");
+
+// // Light - 300
+// @include fontFaceHelveticaNeue("HelveticaNeueLight.otf", 300, "normal");
+// @include fontFaceHelveticaNeue("HelveticaNeueLightItalic.otf", 300, "italic");
+
+@import url('https://fonts.googleapis.com/css2?family=Host+Grotesk:ital,wght@0,300..800;1,300..800&display=swap');
