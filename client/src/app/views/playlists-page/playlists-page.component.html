@@ -83,45 +83,8 @@
 
     <!-- -------------------------------- Cards -------------------------------- -->
     <form class="setting-cards" (submit)="onSubmit($event)">
-      <!------- Play Criteria ------->
-      <div [class]="settingCardItemClasses[0]">
-        <!-- Explanation -->
-        <div class="setting-cards-item-explanation">
-          <input class="setting-cards-item-title" type="text" placeholder="Setting" [defaultValue]="'Play Criteria'" />
-          <textarea
-            class="setting-cards-item-description"
-            [defaultValue]="
-              'Defines what counts as a “play” for a song. This can be based on a specific time in seconds or as a percentage of the song’s total duration. If a song’s duration falls below this defined time, it will still be eligible for playlist addition unless it fails to meet the “Minimal Song Duration” requirement'
-            "
-          >
-          </textarea>
-        </div>
-
-        <!-- Input -->
-        <div class="setting-cards-item-inputs">
-          <input
-            name="playCriteriaDuration"
-            [(ngModel)]="settings.playCriteriaDuration"
-            type="number"
-            class="form-control"
-            placeholder="25"
-            min="0"
-            step="1"
-          />
-          <select
-            name="playCriteriaDurationType"
-            [(ngModel)]="settings.playCriteriaDurationType"
-            class="form-select"
-            role="button"
-          >
-            <option value="percent">percent</option>
-            <option value="seconds">seconds</option>
-          </select>
-        </div>
-      </div>
-
       <!------- Minimal Song Duration ------->
-      <div [class]="settingCardItemClasses[1]">
+      <div [class]="settingCardItemClasses[0]">
         <!-- Explanation -->
         <div class="setting-cards-item-explanation">
           <input
@@ -129,8 +92,10 @@
             type="text"
             placeholder="Setting"
             [defaultValue]="'Minimal Song Duration'"
+            readonly
           />
           <textarea
+            readonly
             class="setting-cards-item-description"
             [defaultValue]="'Sets the minimum song length required for a song to be eligible for playlist addition.'"
           >
@@ -156,11 +121,18 @@
       </div>
 
       <!------- After Date ------->
-      <div [class]="settingCardItemClasses[2]">
+      <div [class]="settingCardItemClasses[1]">
         <!-- Explanation -->
         <div class="setting-cards-item-explanation">
-          <input class="setting-cards-item-title" type="text" placeholder="Setting" [defaultValue]="'After date'" />
+          <input
+            readonly
+            class="setting-cards-item-title"
+            type="text"
+            placeholder="Setting"
+            [defaultValue]="'After date'"
+          />
           <textarea
+            readonly
             class="setting-cards-item-description"
             [defaultValue]="
               'Sets a specific start date so that only song plays occurring after this date are counted toward playlist criteria. This ensures that older plays aren’t considered, allowing playlists to reflect recent listening activity or trends.'
@@ -176,16 +148,18 @@
       </div>
 
       <!------- Minimal Play Count ------->
-      <div [class]="settingCardItemClasses[3]">
+      <div [class]="settingCardItemClasses[2]">
         <!-- Explanation -->
         <div class="setting-cards-item-explanation">
           <input
+            readonly
             class="setting-cards-item-title"
             type="text"
             placeholder="Setting"
             [defaultValue]="'Minimal Play Count'"
           />
           <textarea
+            readonly
             class="setting-cards-item-description"
             [defaultValue]="
               'Specifies the minimum number of plays a song must reach before it can be added to a playlist.'
@@ -209,14 +183,21 @@
       </div>
 
       <!------- Maximum Skips ------->
-      <div [class]="settingCardItemClasses[4]">
+      <div [class]="settingCardItemClasses[3]">
         <!-- Explanation -->
         <div class="setting-cards-item-explanation">
-          <input class="setting-cards-item-title" type="text" placeholder="Setting" [defaultValue]="'Maximum Skips'" />
+          <input
+            readonly
+            class="setting-cards-item-title"
+            type="text"
+            placeholder="Setting"
+            [defaultValue]="'Maximum Skips'"
+          />
           <textarea
+            readonly
             class="setting-cards-item-description"
             [defaultValue]="
-              'Specifies the maximum allowable skips (or skip rate) for a song before it becomes ineligible for playlist addition. Once this threshold is exceeded, the song will no longer qualify'
+              'Specifies the maximum skip rate for a song before it becomes ineligible for playlist addition. Once this threshold is exceeded, the song will no longer qualify'
             "
           >
           </textarea>
@@ -224,38 +205,35 @@
 
         <!-- Input -->
         <div class="setting-cards-item-inputs">
-          <input
-            name="maximumSkipsDuration"
-            [(ngModel)]="settings.maximumSkipsDuration"
-            type="number"
-            class="form-control"
-            placeholder="25"
-            min="0"
-            step="1"
-          />
-          <select
-            name="maximumSkipsDurationType"
-            [(ngModel)]="settings.maximumSkipsDurationType"
-            class="form-select"
-            role="button"
-          >
-            <option value="percent">percent</option>
-            <option value="seconds">seconds</option>
-          </select>
+          <div class="input-group">
+            <input
+              name="maximumSkipsDuration"
+              [(ngModel)]="settings.maximumSkipRate"
+              type="number"
+              class="form-control"
+              placeholder="25"
+              min="0"
+              max="100"
+              step="1"
+            />
+            <span class="input-group-text">%</span>
+          </div>
         </div>
       </div>
 
       <!------- Maximum Playlist Length ------->
-      <div [class]="settingCardItemClasses[5]">
+      <div [class]="settingCardItemClasses[4]">
         <!-- Explanation -->
         <div class="setting-cards-item-explanation">
           <input
+            readonly
             class="setting-cards-item-title"
             type="text"
             placeholder="Setting"
             [defaultValue]="'Maximum Playlist Length'"
           />
           <textarea
+            readonly
             class="setting-cards-item-description"
             [defaultValue]="
               'Set a cap on the number of songs in each playlist to control their length and ensure they stay concise.'

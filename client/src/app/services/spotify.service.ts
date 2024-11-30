@@ -6,6 +6,7 @@ import { LocalStorageKeys } from '../enums/local-storage-keys';
 import { SpotifyToken } from '../types/spotify-token';
 import { stored } from '../utils/stored';
 import { LoginError } from '../errors/login-error';
+import { PlaylistsSettings } from '../types/playlists-settings';
 
 @Injectable({
   providedIn: 'root',
@@ -292,4 +293,91 @@ export class SpotifyService {
       .post<SpotifyToken>(this.tokenEndpoint, body, { headers })
       .pipe(tap((token) => this.token.save(token)));
   };
+
+  /* ----------------------------- Filter History ----------------------------- */
+  filterHistory = async (files: File[], settings: PlaylistsSettings) => {
+    // Memory
+    const memory: Record<number, MemorySpotifyHistory> = {};
+
+    // Helper function to process a single file
+    const processFile = (file: File): Promise<void> => {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+          try {
+            // Get the data
+            const data = JSON.parse(reader.result as string);
+
+            // Filter the data
+            for (const track of data) {
+              // Deconstruct the track
+              const {
+                ts,
+                ms_played,
+                master_metadata_track_name,
+                master_metadata_album_artist_name,
+                spotify_track_uri,
+              } = track;
+
+              // Get the track ID
+              if (!spotify_track_uri) continue;
+              const [_, type, id] = spotify_track_uri.split(':');
+
+              // Check if it's a track
+              if (type !== 'track') continue;
+
+              // Don't consider tracks listened before the specified date
+              const afterDate = settings.afterDate ? new Date(settings.afterDate) : new Date(0);
+              const tsDate = new Date(ts);
+              if (tsDate < afterDate) continue;
+
+              // Determine if the track was skipped
+              const isSkipped = ms_played < (settings.minimalSongDuration ?? 45) * 1000;
+
+              // Add the track to memory
+              if (!memory[id]) {
+                memory[id] = {
+                  id,
+                  artistsName: master_metadata_album_artist_name,
+                  trackName: master_metadata_track_name,
+                  numberPlayed: 1,
+                  numberSkipped: isSkipped ? 1 : 0,
+                };
+              } else {
+                memory[id].numberPlayed++;
+                if (isSkipped) memory[id].numberSkipped++;
+              }
+            }
+
+            resolve(); // Resolve the promise when done
+          } catch (error) {
+            reject(error); // Reject the promise on error
+          }
+        };
+
+        reader.onerror = () => reject(reader.error);
+        reader.readAsText(file);
+      });
+    };
+
+    // Process all files
+    await Promise.all(files.map(processFile));
+
+    // Filter the memory after all files have been processed
+    const minimalPlayCount = settings.minimalPlayCount ?? 1;
+    const maximumSkipRate = settings.maximumSkipRate ? settings.maximumSkipRate / 100 : 0.25;
+    const filtered = Object.values(memory).filter(
+      (track) => track.numberPlayed >= minimalPlayCount && track.numberSkipped / track.numberPlayed <= maximumSkipRate
+    );
+
+    return filtered;
+  };
 }
+
+type MemorySpotifyHistory = {
+  id: number;
+  artistsName: string;
+  trackName: string;
+  numberPlayed: number;
+  numberSkipped: number;
+};
