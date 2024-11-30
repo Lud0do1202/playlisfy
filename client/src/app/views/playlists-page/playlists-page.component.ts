@@ -3,6 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { DragAndDropDirective } from '../../directives/drag-and-drop.directive';
 import { NgFor, NgIf } from '@angular/common';
 import { FormsModule, NgModel } from '@angular/forms';
+import { PlaylistsSettings } from '../../types/playlists-settings';
+import { SpotifyService } from '../../services/spotify.service';
 
 @Component({
   selector: 'pfy-playlists-page',
@@ -12,6 +14,11 @@ import { FormsModule, NgModel } from '@angular/forms';
   styleUrl: './playlists-page.component.scss',
 })
 export class PlaylistsPageComponent implements OnInit {
+  /* -------------------------------------------------------------------------- */
+  /*                                 CONSTRUCTOR                                */
+  /* -------------------------------------------------------------------------- */
+  constructor(private spotify: SpotifyService) {}
+
   /* -------------------------------------------------------------------------- */
   /*                               SPOTIFY HISTORY                              */
   /* -------------------------------------------------------------------------- */
@@ -82,7 +89,7 @@ export class PlaylistsPageComponent implements OnInit {
   /**
    * Number of setting card items.
    */
-  private readonly SETTING_CARD_ITEM_COUNT = 6;
+  private readonly SETTING_CARD_ITEM_COUNT = 5;
 
   /**
    * Array of CSS classes for setting card items.
@@ -92,14 +99,11 @@ export class PlaylistsPageComponent implements OnInit {
   /**
    * Form settings.
    */
-  settings = {
-    playCriteriaDuration: undefined,
-    playCriteriaDurationType: 'percent',
+  settings: PlaylistsSettings = {
     minimalSongDuration: undefined,
     afterDate: undefined,
     minimalPlayCount: undefined,
-    maximumSkipsDuration: undefined,
-    maximumSkipsDurationType: 'percent',
+    maximumSkipRate: undefined,
     maximumPlaylistLength: undefined,
   };
 
@@ -118,9 +122,11 @@ export class PlaylistsPageComponent implements OnInit {
    *
    * @param event - The form submission event.
    */
-  onSubmit(event: SubmitEvent) {
+  async onSubmit(event: SubmitEvent) {
     event.preventDefault();
-    console.log(this.settings);
+
+    // Get the history filtered by the settings
+    const history = await this.spotify.filterHistory(this.spotifyHistoryFiles, this.settings);
   }
 
   /* -------------------------------------------------------------------------- */
