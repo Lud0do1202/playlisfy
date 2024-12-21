@@ -14,6 +14,18 @@ export enum ColorCards {
   Cyan = 'cyan',
 }
 
+export type ColorCardsType =
+  | 'blue'
+  | 'indigo'
+  | 'purple'
+  | 'pink'
+  | 'red'
+  | 'orange'
+  | 'yellow'
+  | 'green'
+  | 'teal'
+  | 'cyan';
+
 /**
  * All values of the ColorCards enum.
  */
@@ -23,7 +35,7 @@ export const colorCards = Object.values(ColorCards);
  * Get a random color card.
  * @returns A random color card.
  */
-export const randomColorCard = () : string => {
+export const randomColorCard = (): ColorCardsType => {
   const randomIndex = Math.floor(Math.random() * colorCards.length);
   return colorCards[randomIndex];
-}
+};

@@ -7,6 +7,7 @@ import { SpotifyToken } from '../types/spotify-token';
 import { stored } from '../utils/stored';
 import { LoginError } from '../errors/login-error';
 import { PlaylistsSettings } from '../types/playlists-settings';
+import { MemorySpotifyHistory } from '../types/memory-spotify-history';
 
 @Injectable({
   providedIn: 'root',
@@ -295,7 +296,13 @@ export class SpotifyService {
   };
 
   /* ----------------------------- Filter History ----------------------------- */
-  filterHistory = async (files: File[], settings: PlaylistsSettings) => {
+  /**
+   * Filters the Spotify history files based on the specified settings.
+   * @param files The Spotify history files to filter.
+   * @param settings The settings to use for filtering the history files.
+   * @returns A promise that resolves to an array of filtered Spotify history tracks.
+   */
+  filterHistory = async (files: File[], settings: PlaylistsSettings): Promise<Record<number, MemorySpotifyHistory>> => {
     // Memory
     const memory: Record<number, MemorySpotifyHistory> = {};
 
@@ -373,11 +380,3 @@ export class SpotifyService {
     return filtered;
   };
 }
-
-type MemorySpotifyHistory = {
-  id: number;
-  artistsName: string;
-  trackName: string;
-  numberPlayed: number;
-  numberSkipped: number;
-};

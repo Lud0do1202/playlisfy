@@ -1,0 +1,20 @@
+<div
+  class="spotify-history-dropzone"
+  role="button"
+  (click)="spotifyHistoryFilesRef.click()"
+  for="spotify-history-file"
+  pfyDragAndDrop
+  (filesDropped)="setSpotifyHistoryFiles($event)"
+>
+  <input
+    type="file"
+    class="d-none"
+    accept="application/json"
+    multiple
+    #spotifyHistoryFilesRef
+    (change)="onSpotifyHistoryFilesBrowsed($event)"
+  />
+
+  <i class="fa-solid fa-file-arrow-up fs-1"></i>
+  <p>Drag and drop your Spotify history file here or click to upload.</p>
+</div>

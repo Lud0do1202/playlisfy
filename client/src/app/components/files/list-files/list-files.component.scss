@@ -1,0 +1,49 @@
+/* -------------------------------------------------------------------------- */
+/*                                   IMPORTS                                  */
+/* -------------------------------------------------------------------------- */
+@import "../../../../scss/variables";
+@import "../../../../../node_modules/bootstrap/scss/functions";
+@import "../../../../../node_modules/bootstrap/scss/variables";
+
+/* -------------------------------------------------------------------------- */
+/*                                   STYLES                                   */
+/* -------------------------------------------------------------------------- */
+.spotify-history-dropzone-result {
+  // Flexbox
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+
+  // Border
+  border: $border-width solid shade-color($spotify-green, 10%);
+  border-radius: 10px;
+
+  // >>>>> Row
+  .spotify-history-dropzone-result-row {
+    // Flexbox
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    // Padding & Margin
+    padding: map-get($spacers, 1) map-get($spacers, 3);
+
+    // >>>>> File information
+    > .spotify-history-dropzone-result-row-file-info {
+      // Flexbox
+      display: flex;
+      flex-direction: row;
+      flex-grow: 1;
+
+      // >>>>> Size
+      .spotify-history-dropzone-result-row-file-size {
+        width: 150px;
+      }
+
+      // >>>>> Name
+      .spotify-history-dropzone-result-row-file-name {
+        flex-grow: 1;
+      }
+    }
+  }
+}

@@ -1,0 +1,20 @@
+<div *ngIf="files.length > 0" class="spotify-history-dropzone-result">
+  @for (file of files; track file; let i = $index) {
+  <div class="spotify-history-dropzone-result-row">
+    <!-- File Information -->
+    <p class="spotify-history-dropzone-result-row-file-info">
+      <span class="spotify-history-dropzone-result-row-file-size">
+        {{ formatBytes(file.size) }}
+      </span>
+      <span class="spotify-history-dropzone-result-row-file-name">
+        {{ file.name }}
+      </span>
+    </p>
+
+    <!-- Remove Button -->
+    <button class="btn btn-icon-spotify-green" (click)="onRemoveFile.emit(i)">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+  </div>
+  }
+</div>

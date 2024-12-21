@@ -1,0 +1,126 @@
+<pfy-section [title]="{tag: 'h2', text: 'Settings'}">
+  <ng-content>
+    <form (submit)="onSubmit($event)">
+      <pfy-card-list>
+        <ng-content>
+          <!------- Minimal Song Duration ------->
+          <pfy-card-item
+            [title]="{ text: 'Minimal Song Duration', placeholder: 'Setting', readonly: true }"
+            [description]="{
+              text: 'Sets the minimum song length required for a song to be eligible for playlist addition.',
+              placeholder: 'Setting',
+              readonly: true
+            }"
+          >
+            <!-- Input -->
+            <ng-content card-inputs>
+              <div class="input-group">
+                <input
+                  name="minimalSongDuration"
+                  [(ngModel)]="settings.minimalSongDuration"
+                  type="number"
+                  class="form-control"
+                  min="0"
+                  step="1"
+                  placeholder="20"
+                  #minimalSongDurationInputRef
+                />
+                <span class="input-group-text" role="button" (click)="minimalSongDurationInputRef.focus()">seconds</span>
+              </div>
+            </ng-content>
+          </pfy-card-item>
+
+          <!------- After Date ------->
+          <pfy-card-item
+            [title]="{ text: 'After date', placeholder: 'Setting', readonly: true }"
+            [description]="{
+              text: 'Sets a specific start date so that only song plays occurring after this date are counted toward playlist criteria. This ensures that older plays aren’t considered, allowing playlists to reflect recent listening activity or trends.',
+              placeholder: 'Setting',
+              readonly: true
+            }"
+          >
+            <!-- Input -->
+            <ng-content card-inputs>
+              <input name="afterDate" [(ngModel)]="settings.afterDate" class="form-control" type="date" role="button" />
+            </ng-content>
+          </pfy-card-item>
+
+          <!------- Minimal Play Count ------->
+          <pfy-card-item
+            [title]="{ text: 'Minimal Play Count', placeholder: 'Setting', readonly: true }"
+            [description]="{
+              text: 'Specifies the minimum number of plays a song must reach before it can be added to a playlist.',
+              placeholder: 'Setting',
+              readonly: true
+            }"
+          >
+            <!-- Input -->
+            <ng-content card-inputs>
+              <input
+                name="minimalPlayCount"
+                [(ngModel)]="settings.minimalPlayCount"
+                class="form-control"
+                type="number"
+                placeholder="1"
+                min="0"
+                step="1"
+              />
+            </ng-content>
+          </pfy-card-item>
+
+          <!------- Maximum Skips ------->
+          <pfy-card-item
+            [title]="{ text: 'Maximum Skips', placeholder: 'Setting', readonly: true }"
+            [description]="{
+              text: 'Specifies the maximum skip rate for a song before it becomes ineligible for playlist addition. Once this threshold is exceeded, the song will no longer qualify',
+              placeholder: 'Setting',
+              readonly: true
+            }"
+          >
+            <!-- Input -->
+            <ng-content card-inputs>
+              <div class="input-group">
+                <input
+                  name="maximumSkipsDuration"
+                  [(ngModel)]="settings.maximumSkipRate"
+                  type="number"
+                  class="form-control"
+                  placeholder="25"
+                  min="0"
+                  max="100"
+                  step="1"
+                />
+                <span class="input-group-text">%</span>
+              </div>
+            </ng-content>
+          </pfy-card-item>
+
+          <!------- Maximum Playlist Length ------->
+          <pfy-card-item
+            [title]="{ text: 'Maximum Playlist Length', placeholder: 'Setting', readonly: true }"
+            [description]="{
+              text: 'Set a cap on the number of songs in each playlist to control their length and ensure they stay concise.',
+              placeholder: 'Setting',
+              readonly: true
+            }"
+          >
+            <!-- Input -->
+            <ng-content card-inputs>
+              <input
+                name="maximumPlaylistLength"
+                [(ngModel)]="settings.maximumPlaylistLength"
+                class="form-control"
+                type="number"
+                placeholder="100"
+                min="0"
+                step="1"
+              />
+            </ng-content>
+          </pfy-card-item>
+
+          <button class="btn btn-primary" type="submit">Submit</button>
+        </ng-content>
+      </pfy-card-list>
+    </form>
+  </ng-content>
+</pfy-section>

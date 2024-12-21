@@ -1,0 +1,180 @@
+/* -------------------------------------------------------------------------- */
+/*                                   IMPORTS                                  */
+/* -------------------------------------------------------------------------- */
+@import "../../../../scss/variables";
+@import "../../../../../node_modules/bootstrap/scss/functions";
+@import "../../../../../node_modules/bootstrap/scss/variables";
+
+/* -------------------------------------------------------------------------- */
+/*                                PFY CARD ITEM                               */
+/* -------------------------------------------------------------------------- */
+:host {
+  flex: 1 1 400px;
+}
+
+/* -------------------------------------------------------------------------- */
+/*                                  CARD ITEM                                 */
+/* -------------------------------------------------------------------------- */
+.setting-card-item {
+  // Flexbox
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: map-get($spacers, 2);
+
+  // Size
+  width: 100%;
+  height: 100%;
+
+  // Padding & Margin
+  padding: map-get($spacers, 3);
+
+  // Border
+  border-radius: 10px;
+
+  // +++++ Hover
+  transition: all 0.3s;
+  &:hover {
+    translate: 3px -3px;
+  }
+
+  // >>>>> Explanation
+  .setting-card-item-explanation {
+    // Flexbox
+    display: flex;
+    flex-direction: column;
+    gap: map-get($spacers, 1);
+    justify-content: flex-start;
+    align-items: stretch;
+
+    // >>>>> Title
+    > .setting-card-item-title {
+      width: 100%;
+      font-size: $h3-font-size;
+      font-weight: $font-weight-semibold;
+      background-color: unset;
+      color: unset;
+      border: 1px solid transparent;
+      border-radius: 5px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+
+      &::placeholder {
+        color: rgba(white, 0.5);
+      }
+    }
+
+    // >>>>> Description
+    > .setting-card-item-description {
+      text-align: justify;
+      width: 100%;
+      background-color: unset;
+      color: unset;
+      border: 1px solid transparent;
+      border-radius: 5px;
+      field-sizing: content;
+      resize: none;
+    }
+  }
+
+  // >>>>> Input
+  .setting-card-item-inputs {
+    // Flexbox
+    display: flex;
+    flex-direction: row;
+    gap: map-get($spacers, 2);
+    align-items: stretch;
+
+    // >>>>> *
+    > * {
+      // Flexbox
+      flex-grow: 1;
+    }
+  }
+
+  // +++++ COLORS
+  @each $key, $color in $card-colors {
+    &.setting-card-item-#{$key} {
+      // Color
+      background: linear-gradient(to bottom right, $color, tint-color($color, 10%));
+      color: white;
+
+      // Border
+      box-shadow: 0px 0px 4px 0 tint-color($color, 20%);
+      border-left: 3px solid transparent;
+      border-bottom: 3px solid transparent;
+
+      // +++++ Hover
+      &:hover {
+        box-shadow: -4px 4px 4px 0 tint-color($color, 20%);
+        border-left: 3px solid tint-color($color, 20%);
+        border-bottom: 3px solid tint-color($color, 20%);
+      }
+
+      // >>>>> Title
+      // >>>>> Description
+      .setting-card-item-title,
+      .setting-card-item-description {
+        // Focus
+        &:focus {
+          border-color: rgba(white, 0.75);
+          color: white;
+          outline: 2px solid rgba(white, 0.3);
+          box-shadow: 0 0 0 0.25rem rgba(white, 0.2);
+        }
+
+        // Readonly and focus
+        &[readonly]:focus {
+          border-color: transparent;
+          color: white;
+          outline: none;
+          box-shadow: none;
+        }
+      }
+
+      // >>>>> Input
+      .setting-card-item-inputs {
+        .form-control,
+        .form-select,
+        .input-group-text {
+          // Color scheme
+          color-scheme: dark;
+
+          // Select carret
+          --bs-form-select-bg-img: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23dee2e6' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+
+          // Color
+          background-color: rgba(white, 0.25);
+          border-color: rgba(white, 0.5);
+          color: white;
+
+          // Placeholder
+          &::placeholder {
+            color: rgba(white, 0.5);
+          }
+
+          // Focus
+          &:focus {
+            border-color: rgba(white, 0.75);
+            color: white;
+            outline: 2px solid rgba(white, 0.3);
+            box-shadow: 0 0 0 0.25rem rgba(white, 0.2);
+          }
+
+          // Remove + - button from the input number
+          &[type="number"]::-webkit-outer-spin-button,
+          &[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+          }
+
+          // Pointer on date input
+          &[type="date"]::-webkit-calendar-picker-indicator {
+            cursor: pointer;
+          }
+        }
+      }
+    }
+  }
+}
