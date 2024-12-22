@@ -7,17 +7,18 @@
     <input
       class="setting-card-item-title"
       type="text"
-      [placeholder]="title.placeholder"
-      [defaultValue]="title.text"
-      [readonly]="title.readonly"
+      [value]="title"
+      [placeholder]="titlePlaceholder"
+      [readonly]="titleReadonly"
+      (change)="titleChange($event)"
     />
     <textarea
       class="setting-card-item-description"
-      [placeholder]="description.placeholder"
-      [defaultValue]="description.text"
-      [readonly]="description.readonly"
-    >
-    </textarea>
+      [value]="description"
+      [placeholder]="descriptionPlaceholder"
+      [readonly]="descriptionReadonly"
+      (change)="descriptionChange($event)"
+    ></textarea>
   </div>
 
   <!-- Inputs -->

@@ -6,12 +6,9 @@
 >
   <ng-content>
     <!-- ----------------------------- File Upload ----------------------------- -->
-    <pfy-drap-and-drop-zone (onNewFiles)="spotifyHistoryFiles = spotifyHistoryFiles.concat($event)"></pfy-drap-and-drop-zone>
+    <pfy-drap-and-drop-zone (onNewFiles)="onNewFiles($event)"></pfy-drap-and-drop-zone>
 
     <!-- -------------------------------- Files -------------------------------- -->
-    <pfy-list-files
-      [files]="spotifyHistoryFiles"
-      (onRemoveFile)="spotifyHistoryFiles.splice($event, 1)"
-    ></pfy-list-files>
+    <pfy-list-files [files]="files" (onRemoveFile)="onRemoveFile($event)"></pfy-list-files>
   </ng-content>
 </pfy-section>

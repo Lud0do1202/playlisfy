@@ -1,7 +1,7 @@
 export type PlaylistsSettings = {
-  minimalSongDuration: number | undefined;
-  afterDate: string | undefined;
-  minimalPlayCount: number | undefined;
-  maximumSkipRate: number | undefined;
-  maximumPlaylistLength: number | undefined;
+  minimalSongDuration?: number;
+  afterDate?: string;
+  minimalPlayCount?: number;
+  maximumSkipRate?: number;
+  maximumPlaylistLength?: number;
 };

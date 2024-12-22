@@ -1,5 +1,5 @@
 import { randomColorCard } from '../../../enums/color-cards';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ColorCardsType } from '../../../enums/color-cards';
 
 /**
@@ -18,28 +18,37 @@ export class CardItemComponent implements OnInit {
   /* -------------------------------------------------------------------------- */
   /*                                   INPUTS                                   */
   /* -------------------------------------------------------------------------- */
-  /**
-   * The color of the card.
-   */
+  // Color
   @Input() color: ColorCardsType | undefined;
 
-  /**
-   * The title of the card.
-   */
-  @Input() title: { placeholder: string | undefined; text: string | undefined; readonly: boolean } = {
-    placeholder: undefined,
-    text: undefined,
-    readonly: false,
-  };
+  // Title
+  @Input() title: string = '';
+  @Input() titlePlaceholder: string = '';
+  @Input() titleReadonly: boolean = false;
 
-  /**
-   * The description of the card.
-   */
-  @Input() description: { placeholder: string | undefined; text: string | undefined; readonly: boolean } = {
-    placeholder: undefined,
-    text: undefined,
-    readonly: false,
-  };
+  // Description
+  @Input() description: string = '';
+  @Input() descriptionPlaceholder: string = '';
+  @Input() descriptionReadonly: boolean = false;
+
+  /* -------------------------------------------------------------------------- */
+  /*                                    OUPUT                                   */
+  /* -------------------------------------------------------------------------- */
+  // Title or description changed
+  @Output() onTitleChange = new EventEmitter<string>();
+  @Output() onDescriptionChange = new EventEmitter<string>();
+
+  // Handles changes to the title
+  titleChange(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    this.onTitleChange.emit(input.value);
+  }
+
+  // Handles changes to the description
+  descriptionChange(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    this.onDescriptionChange.emit(input.value);
+  }
 
   /* -------------------------------------------------------------------------- */
   /*                                    INIT                                    */

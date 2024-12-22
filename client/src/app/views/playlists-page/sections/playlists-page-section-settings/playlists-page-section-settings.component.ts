@@ -17,37 +17,5 @@ export class PlaylistsPageSectionSettingsComponent {
   /* -------------------------------------------------------------------------- */
   /*                                   INPUTS                                   */
   /* -------------------------------------------------------------------------- */
-  @Input() files: File[] = [];
-
-  /* -------------------------------------------------------------------------- */
-  /*                                    PROPS                                   */
-  /* -------------------------------------------------------------------------- */
-  settings: PlaylistsSettings = {
-    minimalSongDuration: undefined,
-    afterDate: undefined,
-    minimalPlayCount: undefined,
-    maximumSkipRate: undefined,
-    maximumPlaylistLength: undefined,
-  };
-
-  /* -------------------------------------------------------------------------- */
-  /*                                 CONSTRUCTOR                                */
-  /* -------------------------------------------------------------------------- */
-  constructor(private spotify: SpotifyService) {}
-
-  /* -------------------------------------------------------------------------- */
-  /*                                   PUBLIC                                   */
-  /* -------------------------------------------------------------------------- */
-  /**
-   * Handles the form submission event.
-   * Prevents the default behavior and logs the settings.
-   *
-   * @param event - The form submission event.
-   */
-  async onSubmit(event: SubmitEvent) {
-    event.preventDefault();
-
-    // Get the history filtered by the settings
-    const history = await this.spotify.filterHistory(this.files, this.settings);
-  }
+  @Input() settings: PlaylistsSettings = {}
 }
