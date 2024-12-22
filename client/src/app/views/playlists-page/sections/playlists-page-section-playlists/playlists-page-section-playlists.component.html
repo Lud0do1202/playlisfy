@@ -1,0 +1,21 @@
+<pfy-section [title]="{ tag: 'h2', text: 'Playlists' }">
+  <ng-content>
+    <pfy-card-list>
+      <ng-content>
+        <!------- Playlists ------->
+        <pfy-card-item
+          *ngFor="let playlist of playlists"
+          [title]="playlist.name"
+          [titlePlaceholder]="'Playlist Name'"
+          [description]="playlist.description"
+          [descriptionPlaceholder]="'Description of the playlist'"
+          (onTitleChange)="playlist.name = $event"
+          (onDescriptionChange)="playlist.description = $event"
+        ></pfy-card-item>
+
+        <!------- New Playlist Button ------->
+        <button class="btn btn-primary" (click)="createNewPlaylist()">+ New Playlist</button>
+      </ng-content>
+    </pfy-card-list>
+  </ng-content>
+</pfy-section>

@@ -1,0 +1,14 @@
+<pfy-section
+  [title]="{ tag: 'h2', text: 'History' }"
+  [subtitle]="
+    'In order to get your Spotify history, go to this page http:/localhost:4200/import-spotify-history and follow the instructions.'
+  "
+>
+  <ng-content>
+    <!-- ----------------------------- File Upload ----------------------------- -->
+    <pfy-drap-and-drop-zone (onNewFiles)="onNewFiles($event)"></pfy-drap-and-drop-zone>
+
+    <!-- -------------------------------- Files -------------------------------- -->
+    <pfy-list-files [files]="files" (onRemoveFile)="onRemoveFile($event)"></pfy-list-files>
+  </ng-content>
+</pfy-section>

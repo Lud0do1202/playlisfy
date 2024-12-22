@@ -1,0 +1,11 @@
+<section class="section">
+  <!-- -------------------------------- Title -------------------------------- -->
+  <div class="section-title">
+    <h1 *ngIf="title.tag === 'h1'">{{title.text}}</h1>
+    <h2 *ngIf="title.tag === 'h2'">{{title.text}}</h2>
+
+    <p *ngIf="subtitle">{{subtitle}}</p>
+  </div>
+
+  <ng-content></ng-content>
+</section>

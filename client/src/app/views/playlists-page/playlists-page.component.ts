@@ -1,104 +1,33 @@
-import { randomColorCard } from './../../enums/color-cards';
-import { Component, OnInit } from '@angular/core';
-import { DragAndDropDirective } from '../../directives/drag-and-drop.directive';
-import { NgFor, NgIf } from '@angular/common';
-import { FormsModule, NgModel } from '@angular/forms';
+import { Component, Input } from '@angular/core';
+import { PlaylistsPageSectionSettingsComponent } from './sections/playlists-page-section-settings/playlists-page-section-settings.component';
+import { PlaylistsPageSectionHeaderComponent } from './sections/playlists-page-section-header/playlists-page-section-header.component';
+import { PlaylistsPageSectionSpotifyHistoryComponent } from './sections/playlists-page-section-spotify-history/playlists-page-section-spotify-history.component';
+import { PlaylistsPageSectionPlaylistsComponent } from './sections/playlists-page-section-playlists/playlists-page-section-playlists.component';
 import { PlaylistsSettings } from '../../types/playlists-settings';
 import { SpotifyService } from '../../services/spotify.service';
+import { MemorySpotifyHistory } from '../../types/memory-spotify-history';
+import { Playlist } from '../../types/playlist';
 
 @Component({
   selector: 'pfy-playlists-page',
   standalone: true,
-  imports: [DragAndDropDirective, NgIf, FormsModule],
+  imports: [
+    PlaylistsPageSectionSettingsComponent,
+    PlaylistsPageSectionHeaderComponent,
+    PlaylistsPageSectionSpotifyHistoryComponent,
+    PlaylistsPageSectionPlaylistsComponent,
+  ],
   templateUrl: './playlists-page.component.html',
   styleUrl: './playlists-page.component.scss',
 })
-export class PlaylistsPageComponent implements OnInit {
+export class PlaylistsPageComponent {
   /* -------------------------------------------------------------------------- */
-  /*                                 CONSTRUCTOR                                */
+  /*                                    PROPS                                   */
   /* -------------------------------------------------------------------------- */
-  constructor(private spotify: SpotifyService) {}
+  // History files
+  files: File[] = [];
 
-  /* -------------------------------------------------------------------------- */
-  /*                               SPOTIFY HISTORY                              */
-  /* -------------------------------------------------------------------------- */
-  /**
-   * JSON file containing the Spotify history
-   */
-  spotifyHistoryFiles: File[] = [];
-
-  /**
-   * Set the Spotify history files
-   */
-  setSpotifyHistoryFiles(fileList: FileList | null): void {
-    this.spotifyHistoryFiles = fileList ? Array.from(fileList) : [];
-  }
-
-  /**
-   * Handles file input for Spotify history files.
-   * Validates and stores the selected files.
-   *
-   * @param event - The file input event.
-   */
-  onSpotifyHistoryFilesBrowsed(event: Event): void {
-    // Cast the event target to an HTMLInputElement
-    const target = event.target as HTMLInputElement;
-    if (!target.files) {
-      this.setSpotifyHistoryFiles(null);
-      return;
-    }
-
-    // Save the files
-    const files = target.files;
-    this.setSpotifyHistoryFiles(files);
-  }
-
-  /**
-   * Removes a Spotify history file at the specified index.
-   *
-   * @param index - The index of the file to remove.
-   */
-  removeSpotifyHistoryFile(index: number): void {
-    if (this.spotifyHistoryFiles) {
-      this.spotifyHistoryFiles.splice(index, 1);
-    }
-  }
-
-  /**
-   * Formats a file size in bytes into a human-readable string.
-   *
-   * @param bytes - The file size in bytes.
-   * @param decimals - Number of decimal places (default is 2).
-   * @returns A formatted string representing the size in appropriate units.
-   */
-  formatBytes(bytes: number, decimals = 2): string {
-    if (bytes === 0) {
-      return '0 Bytes';
-    }
-    const k = 1024;
-    const dm = decimals <= 0 ? 0 : decimals;
-    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
-  }
-
-  /* -------------------------------------------------------------------------- */
-  /*                                  SETTTINGS                                 */
-  /* -------------------------------------------------------------------------- */
-
-  /**
-   * Number of setting card items.
-   */
-  private readonly SETTING_CARD_ITEM_COUNT = 5;
-
-  /**
-   * Array of CSS classes for setting card items.
-   */
-  settingCardItemClasses: string[] = [];
-
-  /**
-   * Form settings.
-   */
+  // Settings
   settings: PlaylistsSettings = {
     minimalSongDuration: undefined,
     afterDate: undefined,
@@ -107,35 +36,47 @@ export class PlaylistsPageComponent implements OnInit {
     maximumPlaylistLength: undefined,
   };
 
-  /**
-   * Generates a CSS class for a setting card item with a random color.
-   *
-   * @returns A string representing the CSS class for the card item.
-   */
-  getSettingCardItemClass(): string {
-    return 'setting-cards-item setting-cards-item-' + randomColorCard();
-  }
+  // Playlists
+  playlists: Playlist[] = [];
 
-  /**
-   * Handles the form submission event.
-   * Prevents the default behavior and logs the settings.
-   *
-   * @param event - The form submission event.
-   */
-  async onSubmit(event: SubmitEvent) {
-    event.preventDefault();
+  /* -------------------------------------------------------------------------- */
+  /*                                 CONSTRUCTOR                                */
+  /* -------------------------------------------------------------------------- */
+  constructor(private spotify: SpotifyService) {}
+
+  /* -------------------------------------------------------------------------- */
+  /*                                   SUBMIT                                   */
+  /* -------------------------------------------------------------------------- */
+  async submit() {
+    console.log(this.files);
+    console.log(this.playlists);
+    console.log(this.settings);
+
+    if (!this.checkCanSubmit()) {
+      console.error(
+        'Submission failed due to the following issues:\n' +
+          '- History not loaded. Please ensure data is available.\n' +
+          '- No playlists found. You need to create at least one playlist.\n' +
+          '- One or more playlists are missing a name or description. Please provide complete information.'
+      );
+      return;
+    }
 
     // Get the history filtered by the settings
-    const history = await this.spotify.filterHistory(this.spotifyHistoryFiles, this.settings);
+    const history = await this.spotify.filterHistory(this.files, this.settings);
+
+    // Log all playlists
+    console.log(history)
   }
 
-  /* -------------------------------------------------------------------------- */
-  /*                                    INIT                                    */
-  /* -------------------------------------------------------------------------- */
-  ngOnInit(): void {
-    // Generate setting card item classes
-    this.settingCardItemClasses = Array(this.SETTING_CARD_ITEM_COUNT)
-      .fill(null)
-      .map(() => 'setting-cards-item setting-cards-item-' + randomColorCard());
+  checkCanSubmit() {
+    // Must load the spotify history first
+    if (this.files.length === 0) return false;
+
+    // Must have at least one playlist
+    if (this.playlists.length === 0) return false;
+
+    // All playlists must have a name and description
+    return !this.playlists.some((playlist) => playlist.name.trim() === '' || playlist.description.trim() === '');
   }
 }

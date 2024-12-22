@@ -1,0 +1,51 @@
+/* -------------------------------------------------------------------------- */
+/*                                   IMPORTS                                  */
+/* -------------------------------------------------------------------------- */
+@import "../../../../scss/variables";
+@import "../../../../../node_modules/bootstrap/scss/functions";
+@import "../../../../../node_modules/bootstrap/scss/variables";
+
+/* -------------------------------------------------------------------------- */
+/*                                   STYLES                                   */
+/* -------------------------------------------------------------------------- */
+.spotify-history-dropzone {
+  // Flexbox
+  display: flex;
+  flex-direction: column;
+  gap: map-get($spacers, 3);
+  justify-content: center;
+  align-items: center;
+
+  // Border
+  border: $border-width dashed shade-color($spotify-green, 10%);
+  border-radius: 10px;
+
+  // Color
+  color: shade-color($spotify-green, 10%);
+
+  // Padding & Margin
+  padding: map-get($spacers, 5);
+
+  // +++++ Hover
+  transition: opacity 0.2s;
+  &:hover {
+    opacity: 0.8;
+  }
+
+  // +++++ File over
+  &.fileover {
+    animation: shake 0.5s infinite;
+  }
+
+  // >>>>> Icon
+  > i {
+    color: shade-color($spotify-green, 10%);
+  }
+
+  // >>>>> Text
+  > p {
+    font-size: 1.2rem;
+    font-weight: $font-weight-light;
+    text-align: center;
+  }
+}

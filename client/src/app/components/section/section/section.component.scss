@@ -1,0 +1,50 @@
+/* -------------------------------------------------------------------------- */
+/*                                   IMPORTS                                  */
+/* -------------------------------------------------------------------------- */
+@import "../../../../../node_modules/bootstrap/scss/functions";
+@import "../../../../../node_modules/bootstrap/scss/variables";
+
+/* -------------------------------------------------------------------------- */
+/*                                    STYLE                                   */
+/* -------------------------------------------------------------------------- */
+.section {
+  // Flexbox
+  display: flex;
+  flex-direction: column;
+  gap: map-get($spacers, 3);
+  justify-content: flex-start;
+  align-self: stretch;
+
+  /* ---------------------------------- Title --------------------------------- */
+  > .section-title {
+    // Flexbox
+    display: flex;
+    flex-direction: column;
+    gap: map-get($spacers, 1);
+    justify-content: flex-start;
+    align-self: stretch;
+
+    // >>>>> Header
+    > h1 {
+      font-size: map-get($display-font-sizes, 3);
+      font-weight: $font-weight-bold;
+
+      // >>>>> Subtitle
+      ~ p {
+        font-style: italic;
+      }
+    }
+
+    > h2 {
+      font-size: map-get($display-font-sizes, 6);
+      font-weight: $font-weight-bold;
+    }
+
+    // >>>>> Subtitle
+    > p {
+      font-size: 1.2rem;
+      font-weight: $font-weight-light;
+      text-align: justify;
+    }
+  }
+}

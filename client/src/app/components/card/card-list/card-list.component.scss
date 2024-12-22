@@ -1,19 +1,19 @@
 /* -------------------------------------------------------------------------- */
 /*                                   IMPORTS                                  */
 /* -------------------------------------------------------------------------- */
-@import "../../../scss/variables";
-@import "../../../../node_modules/bootstrap/scss/functions";
-@import "../../../../node_modules/bootstrap/scss/variables";
+@import "../../../../scss/variables";
+@import "../../../../../node_modules/bootstrap/scss/functions";
+@import "../../../../../node_modules/bootstrap/scss/variables";
 
 /* -------------------------------------------------------------------------- */
-/*                                   STYLES                                   */
+/*                                    STYLE                                   */
 /* -------------------------------------------------------------------------- */
-.pfy-playlists-page {
+.setting-cards {
   // Flexbox
   display: flex;
-  flex-direction: column;
-  flex-wrap: nowrap;
-  gap: map-get($spacers, 5);
-  justify-content: flex-start;
-  align-self: stretch;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: map-get($spacers, 3);
+  justify-content: space-between;
+  align-items: stretch;
 }

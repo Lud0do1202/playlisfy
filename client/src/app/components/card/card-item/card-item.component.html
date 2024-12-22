@@ -1,0 +1,28 @@
+<!-- ----------------------------------------------------------------------- -->
+<!--                                CARD ITEM                                -->
+<!-- ----------------------------------------------------------------------- -->
+<div [class]="'setting-card-item setting-card-item-' + color">
+  <!-- Explanation -->
+  <div class="setting-card-item-explanation">
+    <input
+      class="setting-card-item-title"
+      type="text"
+      [value]="title"
+      [placeholder]="titlePlaceholder"
+      [readonly]="titleReadonly"
+      (change)="titleChange($event)"
+    />
+    <textarea
+      class="setting-card-item-description"
+      [value]="description"
+      [placeholder]="descriptionPlaceholder"
+      [readonly]="descriptionReadonly"
+      (change)="descriptionChange($event)"
+    ></textarea>
+  </div>
+
+  <!-- Inputs -->
+  <div class="setting-card-item-inputs">
+    <ng-content select="[card-inputs]"></ng-content>
+  </div>
+</div>
