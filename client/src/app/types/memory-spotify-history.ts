@@ -1,5 +1,5 @@
 export type MemorySpotifyHistory = {
-  id: number;
+  id: string;
   artistsName: string;
   trackName: string;
   numberPlayed: number;

@@ -302,7 +302,7 @@ export class SpotifyService {
    * @param settings The settings to use for filtering the history files.
    * @returns A promise that resolves to an array of filtered Spotify history tracks.
    */
-  filterHistory = async (files: File[], settings: PlaylistsSettings): Promise<Record<number, MemorySpotifyHistory>> => {
+  filterHistory = async (files: File[], settings: PlaylistsSettings): Promise<MemorySpotifyHistory[]> => {
     // Memory
     const memory: Record<number, MemorySpotifyHistory> = {};
 

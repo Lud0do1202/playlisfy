@@ -5,8 +5,8 @@ import { PlaylistsPageSectionSpotifyHistoryComponent } from './sections/playlist
 import { PlaylistsPageSectionPlaylistsComponent } from './sections/playlists-page-section-playlists/playlists-page-section-playlists.component';
 import { PlaylistsSettings } from '../../types/playlists-settings';
 import { SpotifyService } from '../../services/spotify.service';
-import { MemorySpotifyHistory } from '../../types/memory-spotify-history';
 import { Playlist } from '../../types/playlist';
+import { CyaniteService } from '../../services/cyanite.service';
 
 @Component({
   selector: 'pfy-playlists-page',
@@ -42,7 +42,7 @@ export class PlaylistsPageComponent {
   /* -------------------------------------------------------------------------- */
   /*                                 CONSTRUCTOR                                */
   /* -------------------------------------------------------------------------- */
-  constructor(private spotify: SpotifyService) {}
+  constructor(private spotify: SpotifyService, private cyanite: CyaniteService) {}
 
   /* -------------------------------------------------------------------------- */
   /*                                   SUBMIT                                   */
@@ -64,9 +64,8 @@ export class PlaylistsPageComponent {
 
     // Get the history filtered by the settings
     const history = await this.spotify.filterHistory(this.files, this.settings);
-
-    // Log all playlists
-    console.log(history)
+    const historyIds = history.map((track) => track.id);
+    const tracks = await this.cyanite.getAllTracks(historyIds);
   }
 
   checkCanSubmit() {
