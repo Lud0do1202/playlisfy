@@ -5,6 +5,8 @@ import { stored } from '../utils/stored';
 import { LocalStorageKeys } from '../enums/local-storage-keys';
 import { CyaniteToken } from '../types/cyanite-token';
 import { Observable, of, tap } from 'rxjs';
+import { CyaniteTrack } from '../types/cyanite-track';
+import { wait } from '../utils/promise';
 
 /**
  * Service for handling Cyanite API authentication and token management.
@@ -116,5 +118,72 @@ export class CyaniteService {
     return this.http
       .post<CyaniteToken>(url, { refreshToken: this.token.refreshToken.value })
       .pipe(tap((token) => this.token.save(token)));
+  };
+
+  /* ------------------------------- Get Track ------------------------------- */
+  /**
+   *
+   * @param memo
+   * @param handleError409
+   * @returns
+   */
+  public getTracks = async (ids: string[]): Promise<CyaniteTrack[]> => {
+    // URL
+    const url = `${environment.server.url}/cyanite/tracks`;
+
+    // Call
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${this.token.accessToken.value}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ ids }), // Serialize the body to JSON
+    });
+
+    // Tracks
+    const tracks: CyaniteTrack[] = await response.json();
+    return tracks;
+  };
+
+  /* ----------------------------- Get All Tracks ----------------------------- */
+  public getAllTracks = async (ids: string[]): Promise<CyaniteTrack[]> => {
+    // Predicates
+    const isSuccessful = (track: CyaniteTrack) => track.success;
+    const isOverload = (track: CyaniteTrack) => track.error === 'OVERLOAD';
+    const isAlreadyEnqueued = (track: CyaniteTrack) => track.error === 'ALREADY_ENQUEUED';
+    const isNotAnalysed = (track: CyaniteTrack) => track.error === 'WAS_NOT_ANALYZED';
+    const isEnqueueFailed = (track: CyaniteTrack) => track.error === 'ENQUEUE_FAILED';
+
+    // Get the tracks the first time
+    const tracks = await this.getTracks(ids);
+    const success = tracks.filter(isSuccessful);
+    const enqueuedFailed = tracks.filter(isEnqueueFailed);
+    let failed = tracks.filter((track) => isOverload(track) || isNotAnalysed(track) || isAlreadyEnqueued(track));
+
+    // Retry the not analysed ones
+    const MAX_ATTEMPTS = 20;
+    const DELAY_RETRY = 500;
+    for (let attempt = 0; attempt < MAX_ATTEMPTS && failed.length > 5; attempt++) {
+      // Delay
+      await wait(DELAY_RETRY);
+
+      // Get tracks
+      const retryIds = failed.map((track) => track.id);
+      const retryTracks = await this.getTracks(retryIds);
+      const retrySuccess = retryTracks.filter(isSuccessful);
+      const retryFailed = retryTracks.filter(
+        (track) => isOverload(track) || isNotAnalysed(track) || isAlreadyEnqueued(track)
+      );
+      const retryEnqueuedFailed = retryTracks.filter(isEnqueueFailed);
+
+      // Update results
+      success.push(...retrySuccess);
+      failed = retryFailed;
+      enqueuedFailed.push(...retryEnqueuedFailed);
+    }
+
+    // RETURN
+    return success;
   };
 }
