@@ -1,0 +1,37 @@
+{
+    "name": "playlisfy",
+    "version": "1.0.0",
+    "description": "Create your spotify playlists based on your history",
+    "type": "module",
+    "main": "server.js",
+    "scripts": {
+        "start": "concurrently \"tsc --watch\" \"nodemon dist/server.js\"",
+        "build": "tsc",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [
+        "spotify",
+        "music",
+        "playlist",
+        "track"
+    ],
+    "author": "Lud0do1202",
+    "license": "ISC",
+    "dependencies": {
+        "axios": "^1.7.7",
+        "cors": "^2.8.5",
+        "dotenv": "^16.4.5",
+        "ejs": "^3.1.10",
+        "express": "^4.21.1",
+        "winston": "^3.14.2"
+    },
+    "devDependencies": {
+        "@types/cors": "^2.8.17",
+        "@types/express": "^5.0.0",
+        "@types/node": "^22.7.7",
+        "concurrently": "^9.0.1",
+        "nodemon": "^3.1.7",
+        "ts-node": "^10.9.2",
+        "typescript": "^5.6.3"
+    }
+}
