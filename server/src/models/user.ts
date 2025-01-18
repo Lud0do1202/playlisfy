@@ -3,23 +3,17 @@ import { ModelRelations } from './model_relations';
 import { Database } from '../models/database';
 
 export interface UserAttributes {
-    id: number;
+    id?: number;
     spotifyId: string;
     email: string;
 }
 
 export class User extends Model<UserAttributes> implements UserAttributes {
-    id!: number;
+    id?: number;
     spotifyId!: string;
     email!: string;
 
-    static associate(db: Database) {
-        // Playlists
-        User.hasMany(db.Playlist, {
-            foreignKey: 'userId',
-            as: 'playlists',
-        });
-    }
+    static associate(__db: Database) {}
 }
 
 const UserModel = (sequelize: Sequelize) => {

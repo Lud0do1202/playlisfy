@@ -1,6 +1,6 @@
 import express from 'express';
 import routes from './routes';
-import { Database } from './models/database';
+import { DB } from './models/database';
 import dotenv from 'dotenv';
 import { SyncOptions } from 'sequelize';
 import { Seeder } from './seeders/seeder';
@@ -12,7 +12,7 @@ const port = process.env.EXPRESS_PORT;
 
 // Middlewares
 app.use(express.json());
-app.use('/api', routes);
+app.use('/', routes);
 
 // Environment variables
 const env = {
@@ -22,34 +22,23 @@ const env = {
 
 // Initialize database
 const options: SyncOptions = { force: env.forceSync };
-const db = new Database();
-db.sequelize.sync(options).then(() => {
+DB.sequelize.sync(options).then(() => {
     // Start server
     app.listen(port, () => {
-        console.log(`Server is running on port ${port}...`);
+        console.log(`\nServer is running on port ${port}...`);
     });
 
     // Seed database
     if (env.seedDb) {
-        new Seeder().seed(db);
+        new Seeder().seed();
     }
 });
 
+/* -------------------------------------------------------------------------- */
+/*                                   SANDBOX                                  */
+/* -------------------------------------------------------------------------- */
 app.get('/', (req, res) => {
-    db.User.findAll({
-        include: [
-            {
-                model: db.Playlist,
-                as: 'playlists',
-                include: [
-                    {
-                        model: db.Track,
-                        as: 'tracks',
-                    },
-                ],
-            },
-        ],
-    })
+    DB.User.getAll()
         .then(results => {
             const result = `-----> All playlists: ${JSON.stringify(results, null, 2)}`;
             res.send(result);

@@ -2,6 +2,7 @@ import { Router, Request, Response } from 'express';
 import querystring from 'querystring';
 import axios from 'axios';
 import { generateRandomString } from '../utils/string';
+import { DB } from '../models/database';
 import dotenv from 'dotenv';
 dotenv.config({ path: './environments/.env' });
 
@@ -12,7 +13,7 @@ const clientId = process.env.SPOTIFY_CLIENT_ID;
 const clientSecret = process.env.SPOTIFY_CLIENT_SECRET;
 
 /* --------------------------------- SPOTIFY -------------------------------- */
-router.post('/auth/spotify', (req: Request, res: Response) => {
+router.get('/auth/spotify', (req: Request, res: Response) => {
     const state = generateRandomString(16);
     const scope = 'user-read-private user-read-email';
 
@@ -58,14 +59,20 @@ router.get('/auth/spotify/callback', async (req: Request, res: Response) => {
         const tokenResponse = await axios.post(tokenUrl, body, { headers });
         const { access_token, refresh_token } = tokenResponse.data;
 
-        // Test credentials
+        // Get spotify user profile
         const profileUrl = 'https://api.spotify.com/v1/me';
         const profileResponse = await axios.get(profileUrl, {
             headers: {
                 Authorization: `Bearer ${access_token}`,
             },
         });
-        console.log('---> Spotify user profile:', profileResponse.data);
+
+        // Create user if not exists
+        const { email, id: spotifyId } = profileResponse.data;
+        const exists = await DB.User.getBySpotifyId(spotifyId);
+        if (!exists) {
+            await DB.User.create({ email, spotifyId });
+        }
 
         // Redirection
         res.redirect(

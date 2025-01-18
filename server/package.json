@@ -10,7 +10,8 @@
         "format": "npm run prettier && npm run lint",
         "dev": "tsnd --respawn src/server.ts",
         "precommit": "npm run format && npm run dev",
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "wtf": "eslint --clear-cache"
     },
     "keywords": [
         "playlisfy",
