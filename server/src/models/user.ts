@@ -6,14 +6,24 @@ export interface UserAttributes {
     id?: number;
     spotifyId: string;
     email: string;
+    spotifyAccessToken?: string;
+    spotifyRefreshToken?: string;
 }
 
 export class User extends Model<UserAttributes> implements UserAttributes {
     id?: number;
     spotifyId!: string;
     email!: string;
+    spotifyAccessToken?: string;
+    spotifyRefreshToken?: string;
 
-    static associate(__db: Database) {}
+    static associate(db: Database) {
+        // Playlists
+        User.hasMany(db.Playlist.Model, {
+            foreignKey: 'userId',
+            as: 'playlists',
+        });
+    }
 }
 
 const UserModel = (sequelize: Sequelize) => {
@@ -34,6 +44,14 @@ const UserModel = (sequelize: Sequelize) => {
                 type: DataTypes.STRING,
                 unique: true,
                 allowNull: false,
+            },
+            spotifyAccessToken: {
+                type: DataTypes.STRING(1000),
+                allowNull: true,
+            },  
+            spotifyRefreshToken: {
+                type: DataTypes.STRING (1000),
+                allowNull: true,
             },
         },
         { sequelize },

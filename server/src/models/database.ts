@@ -3,6 +3,7 @@ import process from 'process';
 import configs from '../config/config';
 import dotenv from 'dotenv';
 import { UserRepo } from '../repositories/user_repo';
+import { PlaylistRepo } from '../repositories/playlist_repo';
 dotenv.config({ path: './environments/.env' });
 
 class Database {
@@ -17,6 +18,7 @@ class Database {
 
     /* ---------------------------------- REPO ---------------------------------- */
     public User!: UserRepo;
+    public Playlist!: PlaylistRepo;
 
     /* -------------------------------- SEQUELIZE ------------------------------- */
     public sequelize!: Sequelize;
@@ -32,9 +34,10 @@ class Database {
         this.sequelize = sequelize;
         this.Sequelize = Sequelize;
         this.User = UserRepo.getInstance(sequelize);
+        this.Playlist = PlaylistRepo.getInstance(sequelize);
 
         // Associate models
-        const relations = [this.User.Model];
+        const relations = [this.User.Model, this.Playlist.Model];
         for (const model of relations) {
             model.associate(this);
         }

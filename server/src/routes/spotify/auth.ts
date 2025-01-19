@@ -1,9 +1,10 @@
 import { Router, Request, Response } from 'express';
 import querystring from 'querystring';
 import axios from 'axios';
-import { generateRandomString } from '../utils/string';
-import { DB } from '../models/database';
+import { generateRandomString } from '../../utils/string';
+import { DB } from '../../models/database';
 import dotenv from 'dotenv';
+import { UserCreateDto } from '../../dtos/user_dto';
 dotenv.config({ path: './environments/.env' });
 
 const router = Router();
@@ -15,7 +16,7 @@ const clientSecret = process.env.SPOTIFY_CLIENT_SECRET;
 /* --------------------------------- SPOTIFY -------------------------------- */
 router.get('/auth/spotify', (req: Request, res: Response) => {
     const state = generateRandomString(16);
-    const scope = 'user-read-private user-read-email';
+    const scope = 'user-read-private user-read-email playlist-modify-public playlist-modify-private';
 
     res.redirect(
         'https://accounts.spotify.com/authorize?' +
@@ -68,15 +69,20 @@ router.get('/auth/spotify/callback', async (req: Request, res: Response) => {
         });
 
         // Create user if not exists
-        const { email, id: spotifyId } = profileResponse.data;
-        const exists = await DB.User.getBySpotifyId(spotifyId);
+        const user: UserCreateDto = {
+            email: profileResponse.data.email,
+            spotifyId: profileResponse.data.id,
+            spotifyAccessToken: access_token,
+            spotifyRefreshToken: refresh_token,
+        };
+        const exists = await DB.User.getBySpotifyId(user.spotifyId);
         if (!exists) {
-            await DB.User.create({ email, spotifyId });
+            await DB.User.create(user);
         }
 
         // Redirection
         res.redirect(
-            frontCallback +
+            frontCallback + "?" +
                 querystring.stringify({
                     access_token,
                     refresh_token,
@@ -107,7 +113,7 @@ router.get('/auth/spotify/refresh_token', async (req: Request, res: Response) =>
 
         // Redirection
         res.redirect(
-            frontCallback +
+            frontCallback + "?" +
                 querystring.stringify({
                     access_token,
                     refresh_token,

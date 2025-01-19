@@ -1,3 +1,6 @@
-import { UserAttributes } from "../models/user";
-
-export interface UserCreateDto extends Omit<UserAttributes, 'id'> {}
+export interface UserCreateDto {
+    spotifyId: string;
+    email: string
+    spotifyAccessToken?: string;
+    spotifyRefreshToken?: string;
+}
