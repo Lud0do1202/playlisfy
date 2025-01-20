@@ -19,9 +19,17 @@ export class Playlist extends Model<PlaylistAttributes> implements PlaylistAttri
 
     static associate(db: Database) {
         // User
-        Playlist.belongsTo(db.User.Model, {
+        Playlist.belongsTo(db.UserModel, {
             foreignKey: 'userId',
             as: 'user',
+        });
+
+        // Tracks
+        Playlist.belongsToMany(db.TrackModel, {
+            through: db.PlaylistTrackModel,
+            foreignKey: 'playlistId',
+            otherKey: 'trackId',
+            as: 'tracks',
         });
     }
 }

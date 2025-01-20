@@ -82,7 +82,8 @@ router.get('/auth/spotify/callback', async (req: Request, res: Response) => {
 
         // Redirection
         res.redirect(
-            frontCallback + "?" +
+            frontCallback +
+                '?' +
                 querystring.stringify({
                     access_token,
                     refresh_token,
@@ -113,7 +114,8 @@ router.get('/auth/spotify/refresh_token', async (req: Request, res: Response) =>
 
         // Redirection
         res.redirect(
-            frontCallback + "?" +
+            frontCallback +
+                '?' +
                 querystring.stringify({
                     access_token,
                     refresh_token,

@@ -40,8 +40,7 @@ DB.sequelize.sync(options).then(() => {
 app.get('/', (req, res) => {
     DB.User.getAll()
         .then(results => {
-            const result = `-----> All playlists: ${JSON.stringify(results, null, 2)}`;
-            res.send(result);
+            res.send(results);
         })
         .catch(error => {
             console.log('-----> Error: ', error);

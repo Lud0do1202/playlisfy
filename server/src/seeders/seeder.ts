@@ -1,4 +1,6 @@
 import { ISeeder } from './iseeder';
+import { PlaylistSeeder } from './playlist';
+import { TrackSeeder } from './track';
 import { UserSeeder } from './user';
 
 export class Seeder {
@@ -7,6 +9,6 @@ export class Seeder {
     }
 
     private _getSeeders(): ISeeder<unknown>[] {
-        return [new UserSeeder()];
+        return [new UserSeeder(), new PlaylistSeeder(), new TrackSeeder()];
     }
 }

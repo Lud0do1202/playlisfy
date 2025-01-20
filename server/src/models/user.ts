@@ -19,7 +19,7 @@ export class User extends Model<UserAttributes> implements UserAttributes {
 
     static associate(db: Database) {
         // Playlists
-        User.hasMany(db.Playlist.Model, {
+        User.hasMany(db.PlaylistModel, {
             foreignKey: 'userId',
             as: 'playlists',
         });
@@ -48,9 +48,9 @@ const UserModel = (sequelize: Sequelize) => {
             spotifyAccessToken: {
                 type: DataTypes.STRING(1000),
                 allowNull: true,
-            },  
+            },
             spotifyRefreshToken: {
-                type: DataTypes.STRING (1000),
+                type: DataTypes.STRING(1000),
                 allowNull: true,
             },
         },

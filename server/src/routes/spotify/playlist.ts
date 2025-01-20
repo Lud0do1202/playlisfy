@@ -6,64 +6,92 @@ dotenv.config({ path: './environments/.env' });
 
 const router = Router();
 
-/* ------------------------------- BAD REQUEST ------------------------------ */
-const badRequestPlaylistCreateDto = (playlist: PlaylistCreateDto | undefined) => {
-    if (!playlist) {
-        return 'Body is required';
-    }
-    if (!playlist.name) {
-        return '"name" is required';
-    }
-    if (typeof playlist.name !== 'string') {
-        return '"name" must be a string';
-    }
-    if (playlist.description && typeof playlist.description !== 'string') {
-        return '"description" must be a string or undefined';
-    }
-    if (!playlist.userId) {
-        return '"userId" is required';
-    }
-    if (typeof playlist.userId !== 'number') {
-        return '"userId" must be a number';
-    }
-    if (!playlist.userSpotifyId) {
-        return '"userSpotifyId" is required';
-    }
-    if (typeof playlist.userSpotifyId !== 'string') {
-        return '"userSpotifyId" must be a string';
-    }
-    if (!playlist.spotifyAccessToken) {
-        return '"spotifyAccessToken" is required';
-    }
-    if (typeof playlist.spotifyAccessToken !== 'string') {
-        return '"spotifyAccessToken" must be a string';
-    }
-    return null;
-}
+/* --------------------------------- CREATE --------------------------------- */
+router.post('/playlists', async (req: Request, res: Response) => {
+    const checkBadRequest = (playlist: PlaylistCreateDto | undefined) => {
+        if (!playlist) {
+            return 'Body is required';
+        }
+        if (!playlist.name) {
+            return '"name" is required';
+        }
+        if (typeof playlist.name !== 'string') {
+            return '"name" must be a string';
+        }
+        if (playlist.description && typeof playlist.description !== 'string') {
+            return '"description" must be a string or undefined';
+        }
+        if (!playlist.userId) {
+            return '"userId" is required';
+        }
+        if (typeof playlist.userId !== 'number') {
+            return '"userId" must be a number';
+        }
+        if (!playlist.userSpotifyId) {
+            return '"userSpotifyId" is required';
+        }
+        if (typeof playlist.userSpotifyId !== 'string') {
+            return '"userSpotifyId" must be a string';
+        }
+        if (!playlist.spotifyAccessToken) {
+            return '"spotifyAccessToken" is required';
+        }
+        if (typeof playlist.spotifyAccessToken !== 'string') {
+            return '"spotifyAccessToken" must be a string';
+        }
+        return null;
+    };
 
-/* --------------------------------- SPOTIFY -------------------------------- */
-router.post('/playlist', async (req: Request, res: Response) => {
     try {
         // Get parameters
         const playlist: PlaylistCreateDto | undefined = req.body;
-        const badRequest = badRequestPlaylistCreateDto(playlist);
+        const badRequest = checkBadRequest(playlist);
         if (badRequest) {
             res.status(400).json({ error: badRequest });
             return;
         }
 
         // Create playlist
-        const success = await DB.Playlist.create(playlist!)
-        if (!success) {
-            res.status(500).json({ error: 'Internal server error' });
+        await DB.Playlist.create(playlist!);
+
+        // Success
+        res.status(204).send();
+    } catch (error) {
+        res.status(500).json({ error });
+    }
+});
+
+/* ------------------------------- ADD TRACKS ------------------------------- */
+router.post('/playlists/:id/tracks', async (req: Request, res: Response) => {
+    const checkBadRequest = (trackIds: number[] | undefined) => {
+        if (!trackIds) {
+            return '"trackIds" is required';
+        }
+        if (!Array.isArray(trackIds) || trackIds.some((trackId: number) => typeof trackId !== 'number')) {
+            return "'trackIds' must be an array of numbers";
+        }
+        return null;
+    };
+
+    try {
+        // Get parameters
+        const playlistId = parseInt(req.params.id);
+        const trackIds: number[] = req.body;
+
+        // Bad request
+        const badRequest = checkBadRequest(trackIds);
+        if (badRequest) {
+            res.status(400).json({ error: badRequest });
             return;
         }
 
+        // Add tracks
+        await DB.Playlist.addTracks(playlistId, trackIds);
+
         // Success
-        res.status(201).json(playlist);
+        res.status(204).send();
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Internal server error' });
+        res.status(500).json({ error });
     }
 });
 

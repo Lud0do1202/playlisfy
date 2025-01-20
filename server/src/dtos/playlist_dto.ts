@@ -1,4 +1,4 @@
-export interface PlaylistCreateDto{
+export interface PlaylistCreateDto {
     name: string;
     description?: string;
     userId: number;
