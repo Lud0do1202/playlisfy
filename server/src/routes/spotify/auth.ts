@@ -95,7 +95,7 @@ router.get('/auth/spotify/callback', async (req: Request, res: Response) => {
 });
 
 /* ------------------------------ REFRESH TOKEN ----------------------------- */
-router.get('/auth/spotify/refresh_token', async (req: Request, res: Response) => {
+router.get('/auth/spotify/refresh', async (req: Request, res: Response) => {
     const refresh_token = req.query.refresh_token;
     const tokenUrl = 'https://accounts.spotify.com/api/token';
     const headers = {
@@ -127,3 +127,60 @@ router.get('/auth/spotify/refresh_token', async (req: Request, res: Response) =>
 });
 
 export default router;
+
+const query: any = '';
+const spotify_service: any = '';
+const nav : any = '';
+
+const init = async () => {
+    // Auth from spotify
+    if (query.auth_request === 'spotify') {
+        localStorage.setItem('spotify_access_token', query.access_token);
+        localStorage.setItem('spotify_, query.refresh_token);
+        localStorage.setItem('spotify_expires_at'refresh_token', query.expires_at);
+    }
+
+    // Auth from cyanite
+    else if (query.auth_request === 'cyanite') {
+        localStorage.setItem('cyanite_access_token', query.access_token);
+        localStorage.setItem('cyanite_refresh_token', query.refresh_token);
+        localStorage.setItem('spotify_expires_at', query.expires_at);
+    }
+
+    // Auth Spotify
+    if (!localStorage.getItem('spotify_access_token') || !localStorage.getItem('spotify_refresh_token')) {
+        await axios.get(process.env.SERVER_URL + '/auth/spotify');
+        return;
+    }
+
+    // Refresh Spotify
+    const now = Date.now();
+    const nowMinus15min = now - 15 * 60 * 1000;
+    if (nowMinus15min > (Number(localStorage.getItem('spotify_expires_at')) || 0)) {
+        await axios.get(
+            process.env.SERVER_URL +
+                '/auth/spotify/refresh?refresh_token=' +
+                localStorage.getItem('spotify_refresh_token'),
+        );
+        return;
+    }
+
+    // Auth Cyanite
+    if (!localStorage.getItem('cyanite_access_token') || !localStorage.getItem('cyanite_refresh_token')) {
+        await axios.get(process.env.SERVER_URL + '/auth/cyanite');
+        return;
+    }
+
+    // Refresh Cyanite
+    if (nowMinus15min > (Number(localStorage.getItem('cyanite_expires_at')) || 0)) {
+        await axios.get(
+            process.env.SERVER_URL +
+                '/auth/cyanite/refresh?refresh_token=' +
+                localStorage.getItem('cyanite_refresh_token'),
+        );
+        return;
+    }
+
+    // Redirect home
+    nav.redirect('/home');
+};
